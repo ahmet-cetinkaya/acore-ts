@@ -1,5 +1,15 @@
 {
   "name": "acore-ts",
+  "version": "1.0.0",
+  "description": "Core TypeScript package for SolidJS with reusable implementations and helper code snippets.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ahmetcetinkaya/acore-solidjs.git"
+  },
+  "author": {
+    "name": "Ahmet Çetinkaya",
+    "email": "contact@ahmetcetinkaya.me"
+  },
   "type": "module",
   "module": "index.ts",
   "dependencies": {
