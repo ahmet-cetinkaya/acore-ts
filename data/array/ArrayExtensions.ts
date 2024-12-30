@@ -154,4 +154,18 @@ export default class ArrayExtensions {
   static chunk<T>(array: T[], size: number): T[][] {
     return Array.from({ length: Math.ceil(array.length / size) }, (_, i) => array.slice(i * size, i * size + size));
   }
+
+  /**
+   * Shuffles the array elements in random order.
+   * @param array The array to shuffle.
+   * @returns A new array with shuffled elements.
+   */
+  static shuffle<T>(array: T[]): T[] {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  }
 }
