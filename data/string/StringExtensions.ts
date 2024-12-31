@@ -1,4 +1,4 @@
-export default class SlugHelper {
+export default class StringExtensions {
   private static readonly specialChars: Record<string, string> = {
     "?": "",
     "!": "",
