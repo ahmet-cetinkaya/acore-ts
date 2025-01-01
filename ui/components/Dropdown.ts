@@ -99,12 +99,17 @@ export default class Dropdown extends HTMLElement {
     }
 
     this.trigger = trigger as HTMLElement;
+    this.trigger.setAttribute('aria-haspopup', 'true');
+    this.trigger.setAttribute('aria-expanded', 'false');
+    this.trigger.setAttribute('aria-controls', 'dropdown-content');
 
     // Create content element in body
     this.content = document.createElement("div");
     this.content.className = "ac-dropdown-content fixed hidden z-50";
     this.content.setAttribute("role", "menu"); // Accessibility için
     this.content.setAttribute("aria-orientation", "vertical");
+    this.content.setAttribute("id", "dropdown-content");
+    this.content.setAttribute("tabindex", "-1");
     document.body.appendChild(this.content);
 
     // Move slotted content to body element
@@ -125,15 +130,19 @@ export default class Dropdown extends HTMLElement {
 
     if (isVisible) this.hideMenu();
     else this.showMenu();
+    this.trigger.setAttribute('aria-expanded', (!isVisible).toString());
   }
 
   private showMenu() {
     this.content.classList.remove("hidden");
     this.updatePosition();
+    // Add focus trap and make content focusable
+    requestAnimationFrame(() => this.focusFirstMenuItem());
   }
 
   private hideMenu() {
     this.content.classList.add("hidden");
+    this.trigger.focus();
   }
 
   /**
@@ -179,6 +188,8 @@ export default class Dropdown extends HTMLElement {
    */
   private attachEventListeners() {
     this.trigger.addEventListener("click", this.handleTriggerClick.bind(this));
+    this.trigger.addEventListener("keydown", this.handleTriggerKeydown.bind(this));
+    this.content.addEventListener("keydown", this.handleContentKeydown.bind(this));
     document.addEventListener("click", this.handleDocumentClick.bind(this));
     window.addEventListener("scroll", this.updatePosition.bind(this), true);
     window.addEventListener("resize", this.updatePosition.bind(this));
@@ -189,6 +200,8 @@ export default class Dropdown extends HTMLElement {
    */
   private detachEventListeners() {
     this.trigger?.removeEventListener("click", this.handleTriggerClick.bind(this));
+    this.trigger?.removeEventListener("keydown", this.handleTriggerKeydown.bind(this));
+    this.content?.removeEventListener("keydown", this.handleContentKeydown.bind(this));
     document.removeEventListener("click", this.handleDocumentClick.bind(this));
     window.removeEventListener("scroll", this.updatePosition.bind(this), true);
     window.removeEventListener("resize", this.updatePosition.bind(this));
@@ -201,6 +214,56 @@ export default class Dropdown extends HTMLElement {
   private handleTriggerClick(e: Event) {
     e.stopPropagation();
     this.toggleMenu();
+  }
+
+  private handleTriggerKeydown(e: KeyboardEvent) {
+    switch (e.key) {
+      case 'Enter':
+      case ' ':
+      case 'ArrowDown':
+        e.preventDefault();
+        this.showMenu();
+        this.focusFirstMenuItem();
+        break;
+      case 'Escape':
+        this.hideMenu();
+        break;
+    }
+  }
+
+  private handleContentKeydown(e: KeyboardEvent) {
+    const items = Array.from(this.content.querySelectorAll('[role="menuitem"]'));
+    const currentIndex = items.indexOf(document.activeElement as HTMLElement);
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        if (currentIndex < items.length - 1) {
+          (items[currentIndex + 1] as HTMLElement).focus();
+        }
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        if (currentIndex > 0) {
+          (items[currentIndex - 1] as HTMLElement).focus();
+        }
+        break;
+      case 'Escape':
+        e.preventDefault();
+        this.hideMenu();
+        this.trigger.focus();
+        break;
+      case 'Tab':
+        this.hideMenu();
+        break;
+    }
+  }
+
+  private focusFirstMenuItem() {
+    const firstItem = this.content.querySelector('[role="menuitem"]') as HTMLElement;
+    if (firstItem) {
+      firstItem.focus();
+    }
   }
 
   /**
