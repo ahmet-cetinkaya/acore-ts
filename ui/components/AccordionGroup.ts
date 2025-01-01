@@ -52,7 +52,7 @@ export default class AccordionGroup extends HTMLElement {
       const newAccordion = (e as CustomEvent).detail.accordion as Accordion;
 
       if (this.currentOpenAccordion && this.currentOpenAccordion !== newAccordion) {
-        this.currentOpenAccordion.collapse();
+        this.currentOpenAccordion.close();
       }
 
       this.currentOpenAccordion = newAccordion;

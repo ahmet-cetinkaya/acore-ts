@@ -2,27 +2,29 @@ import { UIError, UIErrorType } from "../errors/UIError";
 
 /**
  * Accordion web component with smooth animation and accessibility support.
- * 
+ *
  * @example
  * ```html
  * <ac-accordion>
  *   <button slot="trigger">Toggle Content</button>
- *   <div slot="content">
- *     <p>This content will expand/collapse with animation</p>
- *   </div>
+ *   <div slot="content">Content here</div>
  * </ac-accordion>
+ * ```
+ *
+ * @example
+ * Group multiple accordions together:
+ * ```html
+ * <ac-accordion-group>
+ *   <ac-accordion>...</ac-accordion>
+ *   <ac-accordion>...</ac-accordion>
+ * </ac-accordion-group>
  * ```
  */
 export default class Accordion extends HTMLElement {
   public static COMPONENT_NAME = "ac-accordion";
 
-  /** Button element that triggers accordion state change */
-  private trigger!: HTMLElement;
-
-  /** Container element that holds expandable content */
+  private trigger?: HTMLElement;
   private content!: HTMLElement;
-
-  /** Current expansion state */
   private isExpanded: boolean = false;
 
   constructor() {
@@ -40,7 +42,40 @@ export default class Accordion extends HTMLElement {
     this.detachEventListeners();
   }
 
-  /** @throws {UIError} When shadow root is not available */
+  /** Opens the accordion if it's closed */
+  public open() {
+    if (!this.isExpanded) {
+      this.toggle();
+    }
+  }
+
+  /** Closes the accordion if it's open */
+  public close() {
+    if (this.isExpanded) {
+      this.toggle();
+    }
+  }
+
+  /** Toggles the accordion state */
+  public toggle() {
+    this.isExpanded = !this.isExpanded;
+
+    if (this.isExpanded) {
+      const height = this.content.scrollHeight;
+      this.content.style.height = `${height}px`;
+      this.trigger?.setAttribute("aria-expanded", "true");
+      this.content.setAttribute("aria-hidden", "false");
+      this.notifyExpanded();
+    } else {
+      const height = this.content.scrollHeight;
+      this.content.style.height = `${height}px`;
+      this.content.offsetHeight;
+      this.content.style.height = "0";
+      this.trigger?.setAttribute("aria-expanded", "false");
+      this.content.setAttribute("aria-hidden", "true");
+    }
+  }
+
   private render() {
     if (!this.shadowRoot) {
       throw new UIError(Accordion.COMPONENT_NAME, UIErrorType.SHADOW_ROOT_NOT_FOUND);
@@ -65,7 +100,6 @@ export default class Accordion extends HTMLElement {
     `;
   }
 
-  /** @throws {UIError} When required elements are not found */
   private initializeElements() {
     if (!this.shadowRoot) {
       throw new UIError(Accordion.COMPONENT_NAME, UIErrorType.SHADOW_ROOT_NOT_FOUND);
@@ -74,41 +108,19 @@ export default class Accordion extends HTMLElement {
     const trigger = this.shadowRoot.querySelector(".ac-accordion-trigger");
     const content = this.shadowRoot.querySelector(".ac-accordion-content");
 
-    if (!trigger || !content) {
-      throw new UIError(
-        Accordion.COMPONENT_NAME,
-        UIErrorType.REQUIRED_ELEMENTS_NOT_FOUND,
-        "Missing trigger or content elements",
-      );
+    if (!content) {
+      throw new UIError(Accordion.COMPONENT_NAME, UIErrorType.REQUIRED_ELEMENTS_NOT_FOUND, "Missing content element");
     }
 
-    this.trigger = trigger as HTMLElement;
-    this.content = content as HTMLElement;
+    if (trigger) {
+      this.trigger = trigger as HTMLElement;
+      this.trigger.setAttribute("role", "button");
+      this.trigger.setAttribute("aria-expanded", "false");
+    }
 
-    this.trigger.setAttribute("role", "button");
-    this.trigger.setAttribute("aria-expanded", "false");
+    this.content = content as HTMLElement;
     this.content.setAttribute("role", "region");
     this.content.setAttribute("aria-hidden", "true");
-  }
-
-  /** Handles accordion state change with smooth height animation */
-  private toggleAccordion() {
-    this.isExpanded = !this.isExpanded;
-
-    if (this.isExpanded) {
-      const height = this.content.scrollHeight;
-      this.content.style.height = `${height}px`;
-      this.trigger.setAttribute("aria-expanded", "true");
-      this.content.setAttribute("aria-hidden", "false");
-      this.notifyExpanded();
-    } else {
-      const height = this.content.scrollHeight;
-      this.content.style.height = `${height}px`;
-      this.content.offsetHeight;
-      this.content.style.height = "0";
-      this.trigger.setAttribute("aria-expanded", "false");
-      this.content.setAttribute("aria-hidden", "true");
-    }
   }
 
   /** Dispatches custom event to notify accordion group of state change */
@@ -121,36 +133,30 @@ export default class Accordion extends HTMLElement {
     this.dispatchEvent(event);
   }
 
-  /** Public API to collapse accordion externally */
-  public collapse() {
-    if (this.isExpanded) {
-      this.toggleAccordion();
-    }
-  }
-
   /** Sets up click and transition listeners */
   private attachEventListeners() {
-    this.trigger.addEventListener("click", this.handleTriggerClick.bind(this));
+    if (this.trigger) {
+      this.trigger.addEventListener("click", this.handleTriggerClick.bind(this));
+    }
     this.content.addEventListener("transitionend", this.handleTransitionEnd.bind(this));
   }
 
   /** Cleanup event listeners on component destroy */
   private detachEventListeners() {
-    this.trigger.removeEventListener("click", this.handleTriggerClick.bind(this));
+    if (this.trigger) {
+      this.trigger.removeEventListener("click", this.handleTriggerClick.bind(this));
+    }
     this.content.removeEventListener("transitionend", this.handleTransitionEnd.bind(this));
   }
 
-  /** @param {Event} e Click event on trigger element */
-  private handleTriggerClick(e: Event) {
-    e.preventDefault();
-    this.toggleAccordion();
+  private handleTriggerClick(triggerClickEvent: Event) {
+    triggerClickEvent.preventDefault();
+    this.toggle();
   }
 
   /** Sets content height to auto after expansion animation completes */
   private handleTransitionEnd() {
-    if (this.isExpanded) {
-      this.content.style.height = "auto";
-    }
+    if (this.isExpanded) this.content.style.height = "auto";
   }
 }
 

@@ -26,29 +26,17 @@ export default class Dropdown extends HTMLElement {
     this.attachShadow({ mode: "open" });
   }
 
-  /**
-   * Lifecycle callback when element is connected to DOM.
-   * Initializes the dropdown and sets up event listeners.
-   */
   connectedCallback() {
     this.render();
     this.initializeElements();
     this.attachEventListeners();
   }
 
-  /**
-   * Lifecycle callback when element is disconnected from DOM.
-   * Cleans up event listeners to prevent memory leaks.
-   */
   disconnectedCallback() {
     this.detachEventListeners();
-    // Remove content element from body
     this.content.remove();
   }
 
-  /**
-   * Renders the initial shadow DOM structure with slots for trigger and content.
-   */
   private render() {
     if (!this.shadowRoot) {
       throw new UIError(Dropdown.COMPONENT_NAME, UIErrorType.SHADOW_ROOT_NOT_FOUND);
@@ -77,10 +65,6 @@ export default class Dropdown extends HTMLElement {
     `;
   }
 
-  /**
-   * Initializes DOM element references and validates required elements.
-   * @throws {Error} When required elements are not found in the shadow DOM.
-   */
   private initializeElements() {
     if (!this.shadowRoot) {
       throw new UIError(Dropdown.COMPONENT_NAME, UIErrorType.SHADOW_ROOT_NOT_FOUND);
