@@ -14,8 +14,7 @@
   "module": "index.ts",
   "dependencies": {
     "js-dos": "^8.3.10",
-    "tailwind-merge": "^2.6.0",
-    "three": "^0.172.0"
+    "tailwind-merge": "^2.6.0"
   },
   "devDependencies": {
     "@types/bun": "^1.1.14",
