@@ -83,9 +83,9 @@ export default class Dropdown extends HTMLElement {
     }
 
     this.trigger = trigger as HTMLElement;
-    this.trigger.setAttribute('aria-haspopup', 'true');
-    this.trigger.setAttribute('aria-expanded', 'false');
-    this.trigger.setAttribute('aria-controls', 'dropdown-content');
+    this.trigger.setAttribute("aria-haspopup", "true");
+    this.trigger.setAttribute("aria-expanded", "false");
+    this.trigger.setAttribute("aria-controls", "dropdown-content");
 
     // Create content element in body
     this.content = document.createElement("div");
@@ -114,7 +114,7 @@ export default class Dropdown extends HTMLElement {
 
     if (isVisible) this.hideMenu();
     else this.showMenu();
-    this.trigger.setAttribute('aria-expanded', (!isVisible).toString());
+    this.trigger.setAttribute("aria-expanded", (!isVisible).toString());
   }
 
   private showMenu() {
@@ -202,14 +202,14 @@ export default class Dropdown extends HTMLElement {
 
   private handleTriggerKeydown(e: KeyboardEvent) {
     switch (e.key) {
-      case 'Enter':
-      case ' ':
-      case 'ArrowDown':
+      case "Enter":
+      case " ":
+      case "ArrowDown":
         e.preventDefault();
         this.showMenu();
         this.focusFirstMenuItem();
         break;
-      case 'Escape':
+      case "Escape":
         this.hideMenu();
         break;
     }
@@ -220,24 +220,24 @@ export default class Dropdown extends HTMLElement {
     const currentIndex = items.indexOf(document.activeElement as HTMLElement);
 
     switch (e.key) {
-      case 'ArrowDown':
+      case "ArrowDown":
         e.preventDefault();
         if (currentIndex < items.length - 1) {
           (items[currentIndex + 1] as HTMLElement).focus();
         }
         break;
-      case 'ArrowUp':
+      case "ArrowUp":
         e.preventDefault();
         if (currentIndex > 0) {
           (items[currentIndex - 1] as HTMLElement).focus();
         }
         break;
-      case 'Escape':
+      case "Escape":
         e.preventDefault();
         this.hideMenu();
         this.trigger.focus();
         break;
-      case 'Tab':
+      case "Tab":
         this.hideMenu();
         break;
     }

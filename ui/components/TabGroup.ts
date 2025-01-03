@@ -5,19 +5,19 @@ import TabTrigger from "./TabTrigger";
 /**
  * Tab group component that manages tab interactions and state.
  * Ensures only one tab is active at a time and handles tab switching.
- * 
+ *
  * @slot tab - Contains tab trigger elements that activate their corresponding panels
  * @slot panel - Contains tab panels that show content for each tab
- * 
+ *
  * @fires {CustomEvent} tab-trigger-click - When a tab trigger is clicked
  * @fires {CustomEvent} tab-activated - When a tab panel becomes active
- * 
+ *
  * @example
  * ```html
  * <ac-tab-group>
  *   <ac-tab-trigger slot="tab">Tab 1</ac-tab-trigger>
  *   <ac-tab-trigger slot="tab">Tab 2</ac-tab-trigger>
- * 
+ *
  *   <ac-tab slot="panel">Panel 1</ac-tab>
  *   <ac-tab slot="panel">Panel 2</ac-tab>
  * </ac-tab-group>
@@ -155,7 +155,7 @@ export default class TabGroup extends HTMLElement {
 
     this.addEventListener("tab-activated", (e: Event) => {
       const newTab = (e as CustomEvent).detail.tab as Tab;
-      
+
       if (this._activeTab && this._activeTab !== newTab) {
         this._activeTab.deactivate();
       }

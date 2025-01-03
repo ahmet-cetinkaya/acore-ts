@@ -4,7 +4,7 @@ import Accordion from "./Accordion";
 /**
  * Container component that manages multiple accordions.
  * Ensures only one accordion is open at a time within the group.
- * 
+ *
  * @example
  * ```html
  * <ac-accordion-group>
@@ -15,7 +15,7 @@ import Accordion from "./Accordion";
  */
 export default class AccordionGroup extends HTMLElement {
   public static COMPONENT_NAME = "ac-accordion-group";
-  
+
   /** Currently expanded accordion within the group */
   private currentOpenAccordion: Accordion | null = null;
 

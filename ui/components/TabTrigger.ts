@@ -3,17 +3,17 @@ import { UIError, UIErrorType } from "../errors/UIError";
 /**
  * Tab trigger component that acts as the clickable trigger for tab panels.
  * Used within ac-tab-group component as a tab button.
- * 
+ *
  * @slot default - Content of the tab trigger button
- * 
+ *
  * @fires {CustomEvent} tab-trigger-click - When the trigger is clicked
- * 
+ *
  * @csspart trigger - The button element that wraps the trigger content
- * 
+ *
  * @property {boolean} selected - Indicates if this tab trigger is currently selected
  * @property {string} aria-selected - ARIA attribute indicating selection state
  * @property {string} aria-controls - ID of the panel this trigger controls
- * 
+ *
  * @example
  * ```html
  * <ac-tab-trigger slot="tab">
@@ -87,7 +87,7 @@ export default class TabTrigger extends HTMLElement {
       const event = new CustomEvent("tab-trigger-click", {
         bubbles: true,
         composed: true,
-        detail: { trigger: this }
+        detail: { trigger: this },
       });
       this.dispatchEvent(event);
     });

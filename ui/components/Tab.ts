@@ -3,15 +3,15 @@ import { UIError, UIErrorType } from "../errors/UIError";
 /**
  * Tab panel component that displays content with smooth fade animation.
  * Used within ac-tab-group component as a panel.
- * 
+ *
  * @slot default - Content to be displayed when tab is active
- * 
+ *
  * @fires {CustomEvent} tab-activated - When the tab becomes active
- * 
+ *
  * @csspart panel - The tab panel container element
- * 
+ *
  * @property {boolean} active - Indicates if the tab is currently active
- * 
+ *
  * @example
  * ```html
  * <ac-tab slot="panel">
