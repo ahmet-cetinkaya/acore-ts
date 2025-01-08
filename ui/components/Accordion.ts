@@ -67,9 +67,6 @@ export default class Accordion extends HTMLElement {
       this.content.setAttribute("aria-hidden", "false");
       this.notifyExpanded();
     } else {
-      const height = this.content.scrollHeight;
-      this.content.style.height = `${height}px`;
-      this.content.offsetHeight;
       this.content.style.height = "0";
       this.trigger?.setAttribute("aria-expanded", "false");
       this.content.setAttribute("aria-hidden", "true");

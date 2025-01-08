@@ -77,7 +77,7 @@ export default class StringExtensions {
     slug = slug.replace(/\s+/g, "-");
 
     // Replace multiple hyphens with single one
-    slug = slug.replace(/\-\-+/g, "-");
+    slug = slug.replace(/--+/g, "-");
 
     // Remove leading/trailing hyphens
     slug = slug.replace(/^-+/, "").replace(/-+$/, "");
