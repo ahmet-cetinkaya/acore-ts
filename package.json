@@ -17,8 +17,7 @@
     "tailwind-merge": "^2.6.0"
   },
   "devDependencies": {
-    "@types/bun": "^1.1.14",
-    "@types/three": "^0.171.0"
+    "@types/bun": "^1.1.15"
   },
   "peerDependencies": {
     "typescript": "^5.7.2"
