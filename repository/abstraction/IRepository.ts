@@ -5,8 +5,8 @@ export interface IListable<T> {
   getList(pageIndex: number, pageSize: number, predicate?: (x: T) => boolean): Promise<PaginationResult<T>>;
 }
 
-export interface ICountable {
-  count(): Promise<number>;
+export interface ICountable<T> {
+  count(predicate?: (x: T) => boolean): Promise<number>;
 }
 
 export interface IGettable<T> {
@@ -27,7 +27,7 @@ export interface IRemovable<T> {
 
 export interface IRepository<T>
   extends IListable<T>,
-    ICountable,
+    ICountable<T>,
     IGettable<T>,
     IAddable<T>,
     IUpdatable<T>,
