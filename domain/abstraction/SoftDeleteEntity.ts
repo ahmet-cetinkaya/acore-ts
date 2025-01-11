@@ -5,7 +5,7 @@ export default abstract class SoftDeletableEntity<TId> extends Entity<TId> {
     id: TId,
     createdDate?: Date,
     updatedDate?: Date,
-    public deletedDate?: Date
+    public deletedDate?: Date,
   ) {
     super(id, createdDate, updatedDate);
   }
