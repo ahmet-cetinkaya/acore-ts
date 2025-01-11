@@ -1,7 +1,9 @@
-export abstract class Entity<TId> {
+export default abstract class Entity<TId> {
   constructor(
     public id: TId,
-    public createdDate: Date,
-    public updatedDate: Date | undefined,
-  ) {}
+    public createdDate?: Date,
+    public updatedDate?: Date,
+  ) {
+    this.createdDate ??= new Date();
+  }
 }
