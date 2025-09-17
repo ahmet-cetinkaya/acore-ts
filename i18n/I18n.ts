@@ -49,8 +49,14 @@ export default class I18n implements II18n {
   }
 
   translate(locale: string, key: string): string {
+    if (!locale) {
+      return key; // Fallback to key if locale not set
+    }
     const translation: string = this.translations[key]?.[locale];
-    if (!translation) throw new Error(`Translation not found for key: ${key} in locale: ${locale}`);
+    if (!translation) {
+      console.warn(`Translation not found for key: ${key} in locale: ${locale}. Falling back to key.`);
+      return key;
+    }
 
     return translation;
   }
