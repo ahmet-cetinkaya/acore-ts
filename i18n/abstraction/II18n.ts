@@ -9,4 +9,7 @@ export default interface II18n {
   getLocaleUrl(url: URL, locale: string, defaultLocale: string): URL;
   getBrowserLocale(): string;
   translate(locale: string, key: string): string;
+
+  loadPreferredLocale(): string | null;
+  savePreferredLocale(locale: string): void;
 }
