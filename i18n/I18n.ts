@@ -29,13 +29,13 @@ export default class I18n implements II18n {
   }
 
   getBrowserLocale(): string {
-    return navigator.language.split('-')[0];
+    return navigator.language.split("-")[0];
   }
 
-  private readonly LOCAL_STORAGE_KEY = 'i18n-preferred-language';
+  private readonly LOCAL_STORAGE_KEY = "i18n-preferred-language";
 
   loadPreferredLocale(): string | null {
-    if (typeof localStorage === 'undefined') return null;
+    if (typeof localStorage === "undefined") return null;
     const saved = localStorage.getItem(this.LOCAL_STORAGE_KEY);
     if (saved && this.locales.includes(saved)) {
       return saved;
@@ -44,7 +44,7 @@ export default class I18n implements II18n {
   }
 
   savePreferredLocale(locale: string): void {
-    if (typeof localStorage === 'undefined') return;
+    if (typeof localStorage === "undefined") return;
     localStorage.setItem(this.LOCAL_STORAGE_KEY, locale);
   }
 

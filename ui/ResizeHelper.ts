@@ -48,7 +48,10 @@ export default class ResizeHelper {
 
         document.addEventListener("mousemove", resize);
         document.addEventListener("mouseup", stopResize);
-        options.onResizeStart?.(mouseEvent, { width: originalWidth, height: originalHeight });
+        options.onResizeStart?.(mouseEvent, {
+          width: originalWidth,
+          height: originalHeight,
+        });
       });
 
       function resize(event: MouseEvent) {
@@ -84,7 +87,10 @@ export default class ResizeHelper {
       function stopResize(event: MouseEvent) {
         document.removeEventListener("mousemove", resize);
         document.removeEventListener("mouseup", stopResize);
-        options.onResizeEnd?.(event, { width: element.offsetWidth, height: element.offsetHeight });
+        options.onResizeEnd?.(event, {
+          width: element.offsetWidth,
+          height: element.offsetHeight,
+        });
       }
     });
   }
