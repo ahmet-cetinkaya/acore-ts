@@ -1,8 +1,8 @@
 export default class Injector {
   private static _instance: Injector = new Injector();
-  private container = new WeakMap<object, unknown>();
+  private container = new Map<object | symbol, unknown>();
 
-  constructor(initialContainer?: WeakMap<object, unknown>) {
+  constructor(initialContainer?: Map<object | symbol, unknown>) {
     if (Injector._instance) this.container = initialContainer!;
   }
 
@@ -10,17 +10,17 @@ export default class Injector {
     return Injector._instance;
   }
 
-  static getInstance(injectMap: WeakMap<object, unknown>): Injector {
+  static getInstance(injectMap: Map<object | symbol, unknown>): Injector {
     if (injectMap) this._instance.container = injectMap;
     return Injector._instance;
   }
 
-  register(token: object, value: unknown): void {
+  register(token: object | symbol, value: unknown): void {
     this.container.set(token, value);
   }
 
-  resolve<T>(token: object): T {
-    if (!this.container.has(token)) throw new Error(`Token not found in container: ${token}`);
+  resolve<T>(token: object | symbol): T {
+    if (!this.container.has(token)) throw new Error(`Token not found in container: ${String(token)}`);
     return this.container.get(token) as T;
   }
 }
